@@ -1,0 +1,360 @@
+from random import *
+
+autobot_name = ['Оптимус Прайм', 'Роллер', 'Джаз', 'Айронхайд', 'Рэтчет', 'Проул', 'Блустрик', 'Сайдсвайп', 'Санстрикер', 'Уилджек', 'Трейлбрейкер', 'Хаунд', 'Мираж', 'Хоулер', 'Бамблби']     # Имена автоботов
+decepticon_name = ['Мегатрон', 'Старскрим', 'Саундвейв',  'Мэйкшифт', 'Брейкдаун', 'Дредвинг', 'Вехикон', 'Чопшоп', 'Клипшэйд', 'Андербайт', 'Слипстрим']                                       # Имена дисептиконов
+player_transformer = None
+characteristic = ['power', 'health', 'armor', 'speed']
+
+
+class Transformers:
+
+    def __init__(self, power, health, armor, speed, gen, name, powerful):
+
+        self.power = power         # Поле - сила
+        self.health = health       # Поле - здоровье
+        self.armor = armor         # Поле - броня
+        self.speed = speed         # Поле - скорость
+        self.gen = gen             # Поле - поколение (для разнообразия, потом от генов будут зависить характеристики)
+        self.name = name           # Поле - имя (рандомно выбирается из второй строки)
+        self.powerful = powerful   # Поле - Мощность (скрытое поле, сумма всех полей. Используется для вычисления побед)
+
+    # Это чтоб всё ЧЁТКО выводилось! Для автоботов
+    def print_info_autobot(self, transformer):
+        print('Имя трансформера:', transformer.name, 'Поколение трансформера:', transformer.gen)
+        print()
+        print('Сила трансформера: ', transformer.power)
+        print('Уровень здоровья трансформера: ', transformer.health)
+        print('Уровень брони трансформера: ', transformer.armor)
+        print('Скорость трансформера: ', transformer.speed)
+        print()
+
+    # Это чтоб всё ЧЁТКО выводилось! Для десептиконов
+    def print_info_dexepticon(self, transformer):
+        print('Его имя:', transformer.name, 'Поколение трансформера:', transformer.gen)
+        print()
+        print('Сила десептикона: ', transformer.power)
+        print('Уровень здоровья десептикона: ', transformer.health)
+        print('Уровень брони десептикона: ', transformer.armor)
+        print('Скорость десептикона: ', transformer.speed)
+        print()
+
+
+# Создание трёх автоботов, что-бы в дальнейшем дать игроку выбрать своего трансформера
+autobot1 = Transformers(randint(50, 100), randint(200, 350), randint(25, 150), randint(200, 300), randint(1, 9), choice(autobot_name), 0)
+autobot2 = Transformers(randint(200, 325), randint(100, 350), randint(105, 150), randint(90, 200), randint(1, 9), choice(autobot_name), 0)
+autobot3 = Transformers(randint(100, 250), randint(200, 250), randint(100, 250), randint(100, 300), randint(1, 9), choice(autobot_name), 0)
+
+# Присвоение значения полю powerful (строка 15)
+autobot1.powerful = autobot1.power + autobot1.health + autobot1.armor + autobot1.speed
+autobot2.powerful = autobot2.power + autobot2.health + autobot2.armor + autobot2.speed
+autobot3.powerful = autobot3.power + autobot3.health + autobot3.armor + autobot3.speed
+
+# Создание 5 противников/десептиконы, которые нужны в игровом цикле
+deception1 = Transformers(randint(100, 400), randint(100, 400), randint(100, 400), randint(100, 300), randint(1, 9), choice(decepticon_name), 0)
+deception2 = Transformers(randint(100, 400), randint(100, 400), randint(100, 400), randint(100, 300), randint(1, 9), choice(decepticon_name), 0)
+deception3 = Transformers(randint(100, 400), randint(100, 400), randint(100, 400), randint(100, 300), randint(1, 9), choice(decepticon_name), 0)
+deception4 = Transformers(randint(100, 400), randint(100, 400), randint(100, 400), randint(100, 300), randint(1, 9), choice(decepticon_name), 0)
+deception5 = Transformers(randint(100, 400), randint(100, 400), randint(100, 400), randint(100, 300), randint(1, 9), choice(decepticon_name), 0)
+
+# Присвоение значения полю powerful (строка 15)
+deception1.powerful = deception1.power + deception1.health + deception1.armor + deception1.speed
+deception2.powerful = deception2.power + deception2.health + deception2.armor + deception2.speed
+deception3.powerful = deception3.power + deception3.health + deception3.armor + deception3.speed
+deception4.powerful = deception4.power + deception4.health + deception4.armor + deception4.speed
+deception5.powerful = deception5.power + deception5.health + deception5.armor + deception5.speed
+
+
+# Ввывод текста для начала игры
+print()
+print('Здравствуй, игрок. Все автоботы ждут тебя. Тебе стоит только сказать и начнётся решающий бой \n'
+      'между трансформерами. Это наша последняя надежда, либо мы победим, либо они. \n'
+      'Насколько нам известо Мегатрон применил на себе равалюционное оружие и превратил себя в нечто.\n'
+      'Толко штурм их базы принесёт победу!')
+start = input('Начнём битву?    ')
+start.lower()
+
+if start == 'да':
+    print()
+    print('Игрок, для сражения тебе понадобиться тело автобота.\n'
+          'К сожалению у нас есть только три тела, которые мы можем востановить. Выбор за тобой!')
+    # Предоставление выбора автобота игроку
+    print()
+    print('Вот первое тело:')
+    autobot1.print_info_autobot(autobot1)
+    print()
+    print('Вот второе тело:')
+    autobot2.print_info_autobot(autobot2)
+    print()
+    print('Вот третье тело:')
+    autobot3.print_info_autobot(autobot3)
+    print()
+    print()
+    player_choice = input('Что выбираешь? ')
+    if player_choice == 1:
+        player_transformer = autobot1
+    if player_choice == 2:
+        player_transformer = autobot2
+    if player_choice == 3:
+        player_transformer = autobot3
+    print('Отлично', player_transformer.name, 'был доблесным воином!')
+    print()
+print('Автоботы, К БОЮ!')
+print()
+
+
+game_ok = True          # Эта переменная служит для понимания не закончился ли игравой цикл
+decepticon_num = 1      # Эта переменная служит для понимания какой по счёту сейчас враг
+deception = None        # Эта переменная служит для упрощения кода в ей присваиватся определённый десептикон
+
+# Начало игрового цикла
+
+while game_ok:
+    print('Твой враг уже приближается!')
+    print('*сейчас тебе покажут случайную характеристику врага, по ней тебе нужно решить. Сражаться или отступить!')
+    print()
+    if decepticon_num == 1:
+        deception = deception1
+        # Вывод случайной характеристики
+        data_ch = choice(characteristic)
+        if data_ch == 'power':
+            print('Сила десептикона:', deception.power)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'health':
+            print('Уровень здоровья десептикона:', deception.health)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'armor':
+            print('Уровень брони десептикона:', deception.armor)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'speed':
+            print('Скорость десептикона:', deception.speed)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        decepticon_num += 1
+
+    if decepticon_num == 2:
+        deception = deception2
+        data_ch = choice(characteristic)
+        if data_ch == 'power':
+            print('Сила десептикона:', deception.power)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'health':
+            print('Уровень здоровья десептикона:', deception.health)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'armor':
+            print('Уровень брони десептикона:', deception.armor)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'speed':
+            print('Скорость десептикона:', deception.speed)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        decepticon_num += 1
+
+    if decepticon_num == 3:
+        deception = deception3
+        data_ch = choice(characteristic)
+        if data_ch == 'power':
+            print('Сила десептикона:', deception.power)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'health':
+            print('Уровень здоровья десептикона:', deception.health)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'armor':
+            print('Уровень брони десептикона:', deception.armor)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'speed':
+            print('Скорость десептикона:', deception.speed)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        decepticon_num += 1
+
+    if decepticon_num == 4:
+        deception = deception4
+        data_ch = choice(characteristic)
+        if data_ch == 'power':
+            print('Сила десептикона:', deception.power)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'health':
+            print('Уровень здоровья десептикона:', deception.health)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'armor':
+            print('Уровень брони десептикона:', deception.armor)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'speed':
+            print('Скорость десептикона:', deception.speed)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        decepticon_num += 1
+
+    if decepticon_num == 5:
+        deception = deception5
+        data_ch = choice(characteristic)
+        if data_ch == 'power':
+            print('Сила десептикона:', deception.power)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'health':
+            print('Уровень здоровья десептикона:', deception.health)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'armor':
+            print('Уровень брони десептикона:', deception.armor)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        if data_ch == 'speed':
+            print('Скорость десептикона:', deception.speed)
+            question = input('Ты будешь биться (да/нет)')
+            if question == 'да':
+                if player_transformer.powerful < deception.powerful:
+                    print('Этот десептикон оказался слишком силён. После сокрушительных ударов тебе удалось выжить, '
+                          'но ты ослабеваешь на -90')
+                    player_transformer.powerful -= 90
+                else:
+                    print('Тебе удалось одержать победу из запчастей ты улучшил снаряжение и становишься силнее на +90')
+                    player_transformer.powerful += 90
+        decepticon_num = False
+# все условные операторы выше ОДИНАКОВЫЕ
